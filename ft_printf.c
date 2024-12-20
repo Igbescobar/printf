@@ -1,57 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: igngonza <igngonza@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 11:58:42 by igngonza          #+#    #+#             */
+/*   Updated: 2024/12/20 12:10:13 by igngonza         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <unistd.h>
+#include "ft_printf.h"
 
-int	print_char(int c)
+int	ft_print_format(char specifier, va_list ap)
 {
-	return (write(1, &c, 1));
-}
+	int	number_chars_printed;
 
-int	print_string(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (*str)
-	{
-		print_char((int)*str);
-		i++;
-		str++;
-	}
-	return (i);
-}
-
-int	print_digit(long n, int base)
-{
-	char	*symbols;
-
-	symbols = "0123456789abcdf";
-	if (n < 0)
-	{
-		write(1, '-', 1);
-		return (print_char(print_digit(-n, base) + 1));
-	}
-	else if (n < base)
-		return (print_char());
-}
-
-int	print_format(char specifier, va_list ap)
-{
-	int	count;
-
-	count = 0;
-	if (specifier == 'c')
-		count += print_char(va_arg(ap, int));
+	number_chars_printed = 0;
+	if (specifier == '%')
+		number_chars_printed += ft_print_char('%');
+	else if (specifier == 'c')
+		number_chars_printed += ft_print_char(va_arg(ap, int));
 	else if (specifier == 's')
-		count += print_string((long)va_arg(ap, const char *));
+		number_chars_printed += ft_print_str(va_arg(ap, char *));
+	else if (specifier == 'p')
+		number_chars_printed = ft_print_ptr(va_arg(ap, unsigned long));
 	else if (specifier == 'd' || specifier == 'i')
-		count += print_digit((long)va_arg(ap, int), 10);
+		number_chars_printed += ft_print_nbr(va_arg(ap, int));
+	else if (specifier == 'u')
+		number_chars_printed += ft_print_nbr_base(va_arg(ap, unsigned int), 10);
 	else if (specifier == 'x')
-		count += print_digit(va_arg(ap, unsigned int), 16);
+		number_chars_printed += ft_print_nbr_base(va_arg(ap, unsigned int), 16);
+	else if (specifier == 'X')
+		number_chars_printed += ft_print_nbr_base(va_arg(ap, unsigned int), 16);
 	else
-		count += write(1, &specifier, 1);
-	return (count);
+		number_chars_printed += write(1, &specifier, 1);
+	return (number_chars_printed);
 }
 
 int	ft_printf(const char *format, ...)
@@ -59,21 +43,16 @@ int	ft_printf(const char *format, ...)
 	va_list	ap;
 	int		count;
 
-	va_start(ap, format);
 	count = 0;
+	va_start(ap, format);
 	while (*format)
 	{
 		if (*format == '%')
-			count += print_format(*(++format), ap);
+			count += ft_print_format(*(++format), ap);
 		else
 			count += write(1, format, 1);
 		format++;
 	}
 	va_end(ap);
 	return (count);
-}
-
-int	main(void)
-{
-	int i;
 }
