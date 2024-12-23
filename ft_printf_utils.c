@@ -6,44 +6,49 @@
 /*   By: igngonza <igngonza@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:56:49 by igngonza          #+#    #+#             */
-/*   Updated: 2024/12/20 12:08:45 by igngonza         ###   ########.fr       */
+/*   Updated: 2024/12/22 11:54:34 by igngonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_print_char(int c)
+int	ft_print_char(char c)
 {
-	return (write(1, &c, 1));
+	(write(1, &c, 1));
+	return (1);
 }
 
 int	ft_print_str(char *str)
 {
-	int	number_chars_printed;
+	int	i;
 
-	number_chars_printed = 0;
-	while (*str)
+	if (!str)
 	{
-		ft_print_char((int)*str);
-		number_chars_printed++;
-		str++;
+		write(1, "(null)", 6);
+		return (6);
 	}
-	return (number_chars_printed);
+	i = 0;
+	while (str[i])
+	{
+		write(1, str + i, 1);
+		i++;
+	}
+	return (i);
 }
 
 int	ft_print_ptr(unsigned long ptr)
 {
-	int	number_chars_printed;
+	int	n;
 
 	if (!ptr)
 	{
 		ft_print_str("(nil)");
 		return (5);
 	}
-	number_chars_printed = 0;
-	number_chars_printed += ft_print_str("0x");
-	number_chars_printed += ft_print_nbr_base(ptr, 16);
-	return (number_chars_printed);
+	n = 0;
+	n += ft_print_str("0x");
+	n += ft_print_nbr_base(ptr, 16);
+	return (n);
 }
 
 int	ft_print_nbr(int n)
