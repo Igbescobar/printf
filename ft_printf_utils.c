@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igngonza <igngonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: igngonza <igngonza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:56:49 by igngonza          #+#    #+#             */
-/*   Updated: 2024/12/22 11:54:34 by igngonza         ###   ########.fr       */
+/*   Updated: 2024/12/23 11:34:11 by igngonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int	ft_print_char(char c)
 {
-	(write(1, &c, 1));
-	return (1);
+	return (write(1, &c, 1));
 }
 
 int	ft_print_str(char *str)
@@ -42,12 +41,12 @@ int	ft_print_ptr(unsigned long ptr)
 
 	if (!ptr)
 	{
-		ft_print_str("(nil)");
+		write(1, "(nil)", 5);
 		return (5);
 	}
 	n = 0;
 	n += ft_print_str("0x");
-	n += ft_print_nbr_base(ptr, 16);
+	n += ft_print_nbr_base(ptr, "0123456789abcdef");
 	return (n);
 }
 
@@ -73,16 +72,18 @@ int	ft_print_nbr(int n)
 	return (number_chars_printed);
 }
 
-int	ft_print_nbr_base(unsigned long n, int base)
+int	ft_print_nbr_base(unsigned long n, char *base)
 {
-	int		number_chars_printed;
-	char	*base_str;
+	int	number_chars_printed;
+	int	len;
 
-	base_str = "0123456789abcdef";
 	number_chars_printed = 0;
-	if (n > 9)
-		number_chars_printed += ft_print_nbr_base(n / base, base);
-	ft_print_char(base_str[n % base]);
+	len = 0;
+	while (base[len])
+		++len;
+	if (n >= (unsigned long)len)
+		number_chars_printed += ft_print_nbr_base(n / len, base);
+	ft_print_char(base[n % len]);
 	++number_chars_printed;
 	return (number_chars_printed);
 }

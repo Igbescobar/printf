@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: igngonza <igngonza@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: igngonza <igngonza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:58:42 by igngonza          #+#    #+#             */
-/*   Updated: 2024/12/22 12:30:54 by igngonza         ###   ########.fr       */
+/*   Updated: 2024/12/23 11:33:43 by igngonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ int	ft_print_format(char specifier, va_list ap)
 	else if (specifier == 'd' || specifier == 'i')
 		count = ft_print_nbr(va_arg(ap, int));
 	else if (specifier == 'u')
-		count = ft_print_nbr_base(va_arg(ap, unsigned int), 10);
+		count = ft_print_nbr_base(va_arg(ap, unsigned int), "0123456789");
 	else if (specifier == 'x')
-		count = ft_print_nbr_base(va_arg(ap, unsigned int), 16);
+		count = ft_print_nbr_base(va_arg(ap, unsigned int), "0123456789abcdef");
 	else if (specifier == 'X')
-		count = ft_print_nbr_base(va_arg(ap, unsigned int), 16);
+		count = ft_print_nbr_base(va_arg(ap, unsigned int), "0123456789ABCDEF");
 	else
 		count = write(1, &specifier, 1);
 	return (count);
