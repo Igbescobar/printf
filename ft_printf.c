@@ -6,12 +6,11 @@
 /*   By: igngonza <igngonza@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:58:42 by igngonza          #+#    #+#             */
-/*   Updated: 2024/12/23 11:33:43 by igngonza         ###   ########.fr       */
+/*   Updated: 2025/01/07 10:49:49 by igngonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	ft_print_format(char specifier, va_list ap)
 {
